@@ -78,6 +78,7 @@ public class CranfieldDataIndexing
             newDocument.add(new StringField("path", filePath.toString(), Field.Store.YES));
             newDocument.add(new LongPoint("last_modified", lastModified));
             newDocument.add(new TextField("file_contents", new String(Files.readAllBytes(filePath)), Store.YES));
+            System.out.println("adding " + filePath);
             indexWriterObject.updateDocument(new Term("path", filePath.toString()), newDocument);
         }
     }
