@@ -21,6 +21,8 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.search.similarities.BM25Similarity;
+import org.apache.lucene.search.similarities.ClassicSimilarity;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
  
@@ -47,13 +49,23 @@ public class CranfieldDataIndexing
         	Analyzer englishAnalyzer = new EnglishAnalyzer();
             //lucene index directory is set here
             Directory indexDirectory = FSDirectory.open( Paths.get("luceneIndex") );
-             
-            //configuring index writer and writing docs using indexCranDataSetFiles method
+            //configuring index writer with default VSM similarity and indexing docs using indexCranDataSetFiles method
             IndexWriterConfig indexConfig = new IndexWriterConfig(englishAnalyzer);
             indexConfig.setOpenMode(OpenMode.CREATE_OR_APPEND);
+            indexConfig.setSimilarity( new ClassicSimilarity());
             IndexWriter writerObject = new IndexWriter(indexDirectory, indexConfig);
             indexCranDataSetFiles(writerObject, cranDataSetPath);
             writerObject.close();
+            
+            Directory indexBM25 = FSDirectory.open( Paths.get("luceneBM25Index") );
+            //configuring index writer with BM25 similarity and indexing docs using indexCranDataSetFiles method
+            IndexWriterConfig indexConfigBM25 = new IndexWriterConfig(englishAnalyzer);
+            indexConfigBM25 = new IndexWriterConfig(englishAnalyzer);
+            indexConfigBM25.setOpenMode(OpenMode.CREATE_OR_APPEND);
+            indexConfigBM25.setSimilarity( new BM25Similarity());
+            IndexWriter writerObject2 = new IndexWriter(indexBM25, indexConfigBM25);
+            indexCranDataSetFiles(writerObject2, cranDataSetPath);
+            writerObject2.close();
         } 
         catch (IOException e) 
         {
