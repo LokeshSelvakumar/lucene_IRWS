@@ -85,7 +85,7 @@ public class LuceneSearch {
 		int indexIncrement = 0;
 		//query parser object
 		QueryParser queryParser = new QueryParser("file_contents", englishAnalyzerObject);
-		queryParser.setAllowLeadingWildcard(true);
+		//queryParser.setAllowLeadingWildcard(true);
 		StringBuilder StringbuilderObject = new StringBuilder();
 
 		//reads all the queries from the cran.qry file and searches the index 
@@ -100,6 +100,7 @@ public class LuceneSearch {
 				}
 			}
 			else if(!currentLine.startsWith(".W") ){
+				currentLine = currentLine.replaceAll("[^a-zA-Z0-9]", " ");  
 				StringbuilderObject.append(currentLine + "\n");
 			}
 		}
