@@ -76,8 +76,10 @@ public class LuceneSearch {
 		//English analyser object
 		Analyzer englishAnalyzerObject = new EnglishAnalyzer();
 		//output file
-		File file = new File("cran_21331969.results");
+		File file = new File("cran_21331969_VSM.results");
+		File file2 = new File("cran_21331969_BM25.results");
 		PrintWriter writerObject = new PrintWriter(file, "UTF-8");
+		PrintWriter writerfile2Object  = new PrintWriter(file2, "UTF-8");
 		BufferedReader bufferedReader = new BufferedReader(new FileReader(new File("cranfieldDataset/cran.qry")));
 		String currentLine;
 		int indexIncrement = 0;
@@ -92,7 +94,7 @@ public class LuceneSearch {
 				if(StringbuilderObject.length()!= 0) {
 					{
 						getScoreForQueries(queryParser,StringbuilderObject,luceneSearcherObject,writerObject,indexIncrement,"STANDARD");
-						getScoreForQueries(queryParser,StringbuilderObject,luceneSearcherObjectBM25,writerObject,indexIncrement,"BM25");
+						getScoreForQueries(queryParser,StringbuilderObject,luceneSearcherObjectBM25,writerfile2Object,indexIncrement,"BM25");
 					}
 					indexIncrement ++;
 				}
@@ -102,7 +104,7 @@ public class LuceneSearch {
 			}
 		}
 		getScoreForQueries(queryParser,StringbuilderObject,luceneSearcherObject,writerObject,indexIncrement,"STANDARD");
-		getScoreForQueries(queryParser,StringbuilderObject,luceneSearcherObjectBM25,writerObject,indexIncrement,"BM25");
+		getScoreForQueries(queryParser,StringbuilderObject,luceneSearcherObjectBM25,writerfile2Object,indexIncrement,"BM25");
 		writerObject.close();
 	}
 
