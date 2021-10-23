@@ -33,7 +33,8 @@ your current directory should be "root@selvakul:~/lucene_IRWS# "
 8. java -jar CranfieldDataIndexing-jar-with-dependencies.jar
 9. java -jar LuceneSearch-jar-with-dependencies.jar
 10. cd trec_eval
-11. ./trec_eval -q -m measure ~/lucene_IRWS/cranfieldDataset/cranqrel ~/lucene_IRWS/cran_21331969.results
+11. ./trec_eval -m gm_map -m map ../cranfieldDataset/QRelsCorrectedforTRECeval ../cran_21331969_VSM.results
+12. ./trec_eval -m gm_map -m map ../cranfieldDataset/QRelsCorrectedforTRECeval ../cran_21331969_BM25.results
 
 ///////////////////EXPLANATION/////////////////////////////////////
 root@selvakul:~/lucene_IRWS# => this is the main project directory
@@ -43,9 +44,10 @@ root@selvakul:~/lucene_IRWS# => this is the main project directory
 6 navigate into main project directory
 7 Preprocess cran.all.1400 from CranfieldDatset folder,splits it into 1400 documents and stores it in processedFiles directory.
 8 creates indexes for VSE and BM25, stores the corresponding index files in luceneIndex and luceneBM25Index folders respectively.
-9 executes the jar responsible for querying predefined queries in lucene indexes created in step 8 and writes the scores in cran_21331969.results file.
+9 executes the jar responsible for querying predefined queries in lucene indexes created in step 8 and 
+  writes the scores in cran_21331969_VSM.results file and cran_21331969_BM25.results .
 step 10 navigating to trec_eval directory
-step 11 is the code to check the result file of the application cran_21331969.results with the given relevance file cranqrel
+step 11,12 is the code to check the result file of the application results with the given relevance file cranqrel
 
 /////////////////ADDITIONAL COMMANDS///////////////////////////////
 rm -rf <filename> => removes the given file
