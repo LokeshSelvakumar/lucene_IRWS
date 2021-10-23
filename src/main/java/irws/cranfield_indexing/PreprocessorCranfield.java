@@ -57,6 +57,7 @@ public class PreprocessorCranfield {
 			}
 		}
 		process_files(StringbuilderObject,IdIncrement,currentLine);
+		System.out.println("processed file_cranfieldDocument_ "+IdIncrement);
 	}
 
 }
