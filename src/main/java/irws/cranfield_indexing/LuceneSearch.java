@@ -20,18 +20,36 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.similarities.BM25Similarity;
 import org.apache.lucene.store.FSDirectory;
 
+/**
+ * LuceneSearchclass is used to search the lucene index and print the cran_21331969.results file
+ * 
+ * @author lokesh Selvakumar
+ *
+ */
 public class LuceneSearch {
 
+	/**
+	 * getScoreForQueries method is used to print the query result scores in the desired format
+	 * 
+	 * @param queryParser
+	 * @param StringbuilderObject
+	 * @param luceneSearcherObject
+	 * @param writerObject
+	 * @param indexIncrement
+	 * @param similarity
+	 * @throws ParseException
+	 * @throws IOException
+	 */
 	public static void getScoreForQueries(QueryParser queryParser,StringBuilder StringbuilderObject,IndexSearcher luceneSearcherObject,
 			PrintWriter writerObject,int  indexIncrement,String similarity) throws ParseException, IOException {
 		Query queryString = queryParser.parse(StringbuilderObject.toString());
-		TopDocs topDocs = luceneSearcherObject.search(queryString, 1);
+		TopDocs topDocs = luceneSearcherObject.search(queryString, 10);
 		ScoreDoc[] scoredocObjects = topDocs.scoreDocs;
 		for(ScoreDoc sd:scoredocObjects)
 		{
 			int queryNumber = sd.doc;
-			writerObject.println((indexIncrement+1) + " Q_No " + queryNumber + ",  " + sd.score + ",  "+ similarity);   
-			System.out.println((indexIncrement+1) + " Q_No " + queryNumber + ",  " + sd.score + ",  " + similarity);
+			writerObject.println((indexIncrement+1) + " Q0 " + queryNumber + "  " + sd.score + " 0 "+ similarity);   
+			System.out.println((indexIncrement+1) + " Q0 " + queryNumber + "  " + sd.score + " 0 " + similarity);
 		}
 		if(similarity.equals("BM25"))
 		{
@@ -39,28 +57,41 @@ public class LuceneSearch {
 		}
 	}
 
+	/**
+	 * Main method that runs upon invocation of this class
+	 * 
+	 * @param args
+	 * @throws Exception
+	 */
 	public static void main(String[] args) throws Exception {
+		//index reader objects for VSM and BM25
 		IndexReader indexReaderObject = DirectoryReader.open(FSDirectory.open(Paths.get("luceneIndex")));
 		IndexReader indexReaderObjectBM25 = DirectoryReader.open(FSDirectory.open(Paths.get("luceneBM25Index")));
 
+		//index Searcher objects for VSM and BM25
 		IndexSearcher luceneSearcherObject = new IndexSearcher(indexReaderObject);
 		IndexSearcher luceneSearcherObjectBM25 = new IndexSearcher(indexReaderObjectBM25);
-		luceneSearcherObjectBM25.setSimilarity(new BM25Similarity());
+		luceneSearcherObjectBM25.setSimilarity(new BM25Similarity(1.2f, 0.5f));
 
+		//English analyser object
 		Analyzer englishAnalyzerObject = new EnglishAnalyzer();
-		File file = new File("cran.results");
+		//output file
+		File file = new File("cran_21331969.results");
 		PrintWriter writerObject = new PrintWriter(file, "UTF-8");
 		BufferedReader bufferedReader = new BufferedReader(new FileReader(new File("cranfieldDataset/cran.qry")));
 		String currentLine;
 		int indexIncrement = 0;
+		//query parser object
 		QueryParser queryParser = new QueryParser("file_contents", englishAnalyzerObject);
 		queryParser.setAllowLeadingWildcard(true);
 		StringBuilder StringbuilderObject = new StringBuilder();
+
+		//reads all the queries from the cran.qry file and searches the index 
 		while ((currentLine = bufferedReader.readLine()) != null) {
 			if(currentLine.startsWith(".I") ) {
 				if(StringbuilderObject.length()!= 0) {
 					{
-						getScoreForQueries(queryParser,StringbuilderObject,luceneSearcherObject,writerObject,indexIncrement,"VSM");
+						getScoreForQueries(queryParser,StringbuilderObject,luceneSearcherObject,writerObject,indexIncrement,"STANDARD");
 						getScoreForQueries(queryParser,StringbuilderObject,luceneSearcherObjectBM25,writerObject,indexIncrement,"BM25");
 					}
 					indexIncrement ++;
@@ -70,8 +101,9 @@ public class LuceneSearch {
 				StringbuilderObject.append(currentLine + "\n");
 			}
 		}
-		getScoreForQueries(queryParser,StringbuilderObject,luceneSearcherObject,writerObject,indexIncrement,"VSM");
+		getScoreForQueries(queryParser,StringbuilderObject,luceneSearcherObject,writerObject,indexIncrement,"STANDARD");
 		getScoreForQueries(queryParser,StringbuilderObject,luceneSearcherObjectBM25,writerObject,indexIncrement,"BM25");
+		writerObject.close();
 	}
 
 }

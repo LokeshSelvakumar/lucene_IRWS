@@ -48,20 +48,20 @@
 	</dependencies>
 
 	<build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-	    <plugin>
-              <artifactId>maven-assembly-plugin</artifactId>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>build-a</id>
+						<id>preprocessor_1</id>
 						<configuration>
 							<archive>
 								<manifest>
@@ -69,9 +69,8 @@
 								</manifest>
 							</archive>
 							<descriptorRefs>
-								<descriptorRef>jar-with-dependencies</descriptorRef>
+								<descriptorRef>21331969</descriptorRef>
 							</descriptorRefs>
-							<!-- <appendAssemblyId>false</appendAssemblyId> -->
 							<finalName>PreprocessorCranfield</finalName>
 						</configuration>
 						<phase>package</phase>
@@ -80,7 +79,7 @@
 						</goals>
 					</execution>
 					<execution>
-						<id>build-b</id>
+						<id>CranfieldDataIndexing_1</id>
 						<configuration>
 							<archive>
 								<manifest>
@@ -88,9 +87,8 @@
 								</manifest>
 							</archive>
 							<descriptorRefs>
-								<descriptorRef>jar-with-dependencies</descriptorRef>
+								<descriptorRef>21331969</descriptorRef>
 							</descriptorRefs>
-							<!-- <appendAssemblyId>false</appendAssemblyId> -->
 							<finalName>CranfieldDataIndexing</finalName>
 						</configuration>
 						<phase>package</phase>
@@ -99,7 +97,7 @@
 						</goals>
 					</execution>
 					<execution>
-						<id>build-c</id>
+						<id>LuceneSearch_1</id>
 						<configuration>
 							<archive>
 								<manifest>
@@ -107,9 +105,8 @@
 								</manifest>
 							</archive>
 							<descriptorRefs>
-								<descriptorRef>jar-with-dependencies</descriptorRef>
+								<descriptorRef>21331969</descriptorRef>
 							</descriptorRefs>
-							<!-- <appendAssemblyId>false</appendAssemblyId> -->
 							<finalName>LuceneSearch</finalName>
 						</configuration>
 						<phase>package</phase>
@@ -118,8 +115,8 @@
 						</goals>
 					</execution>
 				</executions>
-            </plugin>
-        </plugins>
-    </build>
+			</plugin>
+		</plugins>
+	</build>
 </project>
 
