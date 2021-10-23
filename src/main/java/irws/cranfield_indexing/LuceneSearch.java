@@ -107,6 +107,7 @@ public class LuceneSearch {
 		getScoreForQueries(queryParser,StringbuilderObject,luceneSearcherObject,writerObject,indexIncrement,"STANDARD");
 		getScoreForQueries(queryParser,StringbuilderObject,luceneSearcherObjectBM25,writerfile2Object,indexIncrement,"BM25");
 		writerObject.close();
+		writerfile2Object.close();
 	}
 
 }
