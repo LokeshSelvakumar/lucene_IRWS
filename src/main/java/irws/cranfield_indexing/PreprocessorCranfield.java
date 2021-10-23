@@ -48,6 +48,7 @@ public class PreprocessorCranfield {
 			if(currentLine.startsWith(".I")){
 				if(StringbuilderObject.length()!= 0){
 					process_files(StringbuilderObject,IdIncrement,currentLine);
+					System.out.println("processed file_cranfieldDocument_ "+IdIncrement);
 					IdIncrement++;
 				}
 			}
