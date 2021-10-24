@@ -6,13 +6,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.CharArraySet;
-import org.apache.lucene.analysis.core.StopAnalyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
@@ -105,7 +107,7 @@ public class LuceneSearch {
 		String currentLine;
 		int indexIncrement = 0;
 		//query parser object
-		QueryParser queryParser = new QueryParser("file_contents", englishAnalyzerObject);
+		QueryParser queryParser = new MultiFieldQueryParser(new String[] {"file_contents"}, englishAnalyzerObject,boost());
 		//queryParser.setAllowLeadingWildcard(true);
 		StringBuilder StringbuilderObject = new StringBuilder();
 
@@ -122,7 +124,7 @@ public class LuceneSearch {
 			}
 			else if(!currentLine.startsWith(".W") ){
 				currentLine = currentLine.replaceAll("[^a-zA-Z0-9]", " ");  
-				StringbuilderObject.append(currentLine);
+				StringbuilderObject.append(currentLine + " ");
 			}
 		}
 		getScoreForQueries(queryParser,StringbuilderObject,luceneSearcherObject,writerObject,indexIncrement,"STANDARD");
@@ -132,4 +134,9 @@ public class LuceneSearch {
 		bufferedReader.close();
 	}
 
+	public static Map<String, Float> boost(){
+		Map<String, Float> boostMap = new HashMap();
+		boostMap.put("file_contents", (float) 0.38);
+		return boostMap;
+	}
 }
