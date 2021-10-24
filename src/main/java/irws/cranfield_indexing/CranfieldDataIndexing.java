@@ -52,7 +52,6 @@ public class CranfieldDataIndexing
             //configuring index writer with default VSM similarity and indexing docs using indexCranDataSetFiles method
             IndexWriterConfig indexConfig = new IndexWriterConfig(englishAnalyzer);
             indexConfig.setOpenMode(OpenMode.CREATE_OR_APPEND);
-            indexConfig.setSimilarity( new ClassicSimilarity());
             IndexWriter writerObject = new IndexWriter(indexDirectory, indexConfig);
             indexCranDataSetFiles(writerObject, cranDataSetPath);
             writerObject.close();
@@ -62,7 +61,7 @@ public class CranfieldDataIndexing
             IndexWriterConfig indexConfigBM25 = new IndexWriterConfig(englishAnalyzer);
             indexConfigBM25 = new IndexWriterConfig(englishAnalyzer);
             indexConfigBM25.setOpenMode(OpenMode.CREATE_OR_APPEND);
-            indexConfigBM25.setSimilarity( new BM25Similarity());
+            indexConfigBM25.setSimilarity( new BM25Similarity(1.2f, 0.5f));
             IndexWriter writerObject2 = new IndexWriter(indexBM25, indexConfigBM25);
             indexCranDataSetFiles(writerObject2, cranDataSetPath);
             writerObject2.close();
