@@ -122,7 +122,7 @@ public class LuceneSearch {
 			}
 			else if(!currentLine.startsWith(".W") ){
 				currentLine = currentLine.replaceAll("[^a-zA-Z0-9]", " ");  
-				StringbuilderObject.append(currentLine + "\n");
+				StringbuilderObject.append(currentLine);
 			}
 		}
 		getScoreForQueries(queryParser,StringbuilderObject,luceneSearcherObject,writerObject,indexIncrement,"STANDARD");
