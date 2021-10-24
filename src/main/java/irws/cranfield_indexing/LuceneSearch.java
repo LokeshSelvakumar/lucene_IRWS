@@ -8,6 +8,8 @@ import java.io.PrintWriter;
 import java.nio.file.Paths;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.CharArraySet;
+import org.apache.lucene.analysis.core.StopAnalyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
@@ -74,7 +76,26 @@ public class LuceneSearch {
 		luceneSearcherObjectBM25.setSimilarity(new BM25Similarity(1.2f, 0.5f));
 
 		//English analyser object
-		Analyzer englishAnalyzerObject = new EnglishAnalyzer();
+		CharArraySet newStopSet = CharArraySet.copy(EnglishAnalyzer.ENGLISH_STOP_WORDS_SET);
+		newStopSet.add("above");
+		newStopSet.add("after");
+		newStopSet.add("about");
+		newStopSet.add("can");
+		newStopSet.add("do");
+		newStopSet.add("because");
+		newStopSet.add("how");
+		newStopSet.add("get");
+		newStopSet.add("more");
+		newStopSet.add("from");
+		newStopSet.add("would");
+		newStopSet.add("so");
+		newStopSet.add("we");
+		newStopSet.add("most");
+		newStopSet.add("while");
+		newStopSet.add("which");
+		newStopSet.add("you");
+		newStopSet.add("when");
+		Analyzer englishAnalyzerObject = new EnglishAnalyzer(newStopSet);
 		//output file
 		File file = new File("cran_21331969_VSM.results");
 		File file2 = new File("cran_21331969_BM25.results");
