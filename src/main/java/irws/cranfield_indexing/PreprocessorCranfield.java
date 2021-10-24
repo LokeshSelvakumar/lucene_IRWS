@@ -14,7 +14,7 @@ import java.io.UnsupportedEncodingException;
  *
  */
 public class PreprocessorCranfield {
-	
+
 	/**
 	 * This method is used to generate documents with different IDs and write the String data using printwriter
 	 * 
@@ -30,7 +30,6 @@ public class PreprocessorCranfield {
 		writerObject.println(StringbuilderObject.toString());
 		writerObject.close();
 		StringbuilderObject.delete(0, StringbuilderObject.length());
-		StringbuilderObject.append(currentLine);
 	}
 	/**
 	 * Main method that starts the execution of this program
@@ -53,11 +52,11 @@ public class PreprocessorCranfield {
 				}
 			}
 			else {
-			StringbuilderObject.append(currentLine);
+					StringbuilderObject.append(currentLine+" ");
 			}
 		}
 		process_files(StringbuilderObject,IdIncrement,currentLine);
 		System.out.println("processed file_cranfieldDocument_ "+IdIncrement);
+		readerObject.close();
 	}
-
 }
