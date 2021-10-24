@@ -1,7 +1,10 @@
 package irws.cranfield_indexing;
  
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -110,7 +113,7 @@ public class CranfieldDataIndexing
             Document newDocument = new Document();
             newDocument.add(new StringField("path", filePath.toString(), Field.Store.YES));
             newDocument.add(new LongPoint("last_modified", lastModified));
-            newDocument.add(new TextField("file_contents", new String(Files.readAllBytes(filePath)), Store.YES));
+            newDocument.add(new TextField("file_contents", new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))));
             System.out.println("adding " + filePath);
             indexWriterObject.updateDocument(new Term("path", filePath.toString()), newDocument);
         }
