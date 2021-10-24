@@ -8,7 +8,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
 /**
- * This file is used to preprocess the given cranfield dataset and split them into individual documents
+ * PreprocessorCranfield is used to preprocess the given cranfield dataset and split them into individual documents
  * 
  * @author lokesh selvakumar
  *
@@ -30,7 +30,7 @@ public class PreprocessorCranfield {
 		writerObject.println(StringbuilderObject.toString());
 		writerObject.close();
 		StringbuilderObject.delete(0, StringbuilderObject.length());
-		StringbuilderObject.append(currentLine + "\n");
+		StringbuilderObject.append(currentLine);
 	}
 	/**
 	 * Main method that starts the execution of this program
@@ -53,7 +53,7 @@ public class PreprocessorCranfield {
 				}
 			}
 			else {
-			StringbuilderObject.append(currentLine + "\n");
+			StringbuilderObject.append(currentLine);
 			}
 		}
 		process_files(StringbuilderObject,IdIncrement,currentLine);

@@ -10,6 +10,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -45,8 +46,27 @@ public class CranfieldDataIndexing
  
         try
         {
+        	CharArraySet newStopSet = CharArraySet.copy(EnglishAnalyzer.ENGLISH_STOP_WORDS_SET);
+    		newStopSet.add("above");
+    		newStopSet.add("after");
+    		newStopSet.add("about");
+    		newStopSet.add("can");
+    		newStopSet.add("do");
+    		newStopSet.add("because");
+    		newStopSet.add("how");
+    		newStopSet.add("get");
+    		newStopSet.add("more");
+    		newStopSet.add("from");
+    		newStopSet.add("would");
+    		newStopSet.add("so");
+    		newStopSet.add("we");
+    		newStopSet.add("most");
+    		newStopSet.add("while");
+    		newStopSet.add("which");
+    		newStopSet.add("you");
+    		newStopSet.add("when");
         	//English analyzer with the default stop words
-        	Analyzer englishAnalyzer = new EnglishAnalyzer();
+        	Analyzer englishAnalyzer = new EnglishAnalyzer(newStopSet);
             //lucene index directory is set here
             Directory indexDirectory = FSDirectory.open( Paths.get("luceneIndex") );
             //configuring index writer with default VSM similarity and indexing docs using indexCranDataSetFiles method
@@ -55,6 +75,7 @@ public class CranfieldDataIndexing
             IndexWriter writerObject = new IndexWriter(indexDirectory, indexConfig);
             indexCranDataSetFiles(writerObject, cranDataSetPath);
             writerObject.close();
+            indexDirectory.close();
             
             Directory indexBM25 = FSDirectory.open( Paths.get("luceneBM25Index") );
             //configuring index writer with BM25 similarity and indexing docs using indexCranDataSetFiles method
@@ -65,6 +86,7 @@ public class CranfieldDataIndexing
             IndexWriter writerObject2 = new IndexWriter(indexBM25, indexConfigBM25);
             indexCranDataSetFiles(writerObject2, cranDataSetPath);
             writerObject2.close();
+            indexBM25.close();
         } 
         catch (IOException e) 
         {
